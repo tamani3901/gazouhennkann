@@ -30,11 +30,12 @@
             background: #4C97FF;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 20px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
+            margin: 5px;
         }
         button:active {
             background: #3d85e6;
@@ -57,11 +58,14 @@
 
         <canvas id="canvas"></canvas><br>
 
-        <button onclick="downloadTxt()">テキストリストを保存</button>
+        <button onclick="downloadTxt()">テキスト保存</button>
+        <button onclick="copyText()">コピー</button>
 
         <p id="status">画像を選択してください</p>
 
-        <textarea id="output" placeholder="ここに変換後のデータが表示されます（全選択してコピペ可）"></textarea>
+        <textarea id="output"
+            placeholder="ここに変換後のデータが表示されます（コピーボタン対応）">
+        </textarea>
     </div>
 
     <script>
@@ -106,9 +110,8 @@
                         finalData.push(hsv.h, hsv.s, hsv.v);
                     }
 
-                    const text = finalData.join('\n');
-                    output.value = text;
-                    status.innerText = "変換完了！ 388,800行の純粋なデータです。";
+                    output.value = finalData.join('\n');
+                    status.innerText = "変換完了！ 388,800行の純粋データ生成完了";
                 };
                 img.src = ev.target.result;
             };
@@ -144,6 +147,13 @@
             a.href = URL.createObjectURL(blob);
             a.download = "ultimate_scratch_data.txt";
             a.click();
+        }
+
+        function copyText() {
+            output.select();
+            output.setSelectionRange(0, output.value.length);
+            document.execCommand("copy");
+            status.innerText = "コピーした！Scratchにそのまま貼れる";
         }
     </script>
 </body>
